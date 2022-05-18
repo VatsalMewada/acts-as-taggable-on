@@ -22,6 +22,7 @@ module ActsAsTaggableOn
     ### SCOPES:
     scope :most_used, ->(limit = 20) { order('taggings_count desc').limit(limit) }
     scope :least_used, ->(limit = 20) { order('taggings_count asc').limit(limit) }
+    scope :having_categories, ->(categories) { where('lower(category) ilike ANY ( array[?] )', categories.map(&:downcase)) }
 
     def self.named(name)
       if ActsAsTaggableOn.strict_case_match
